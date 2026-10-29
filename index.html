@@ -954,7 +954,6 @@
         <li><a href="#work">Projects</a></li>
         <li><a href="#journey">Journey</a></li>
         <li><a href="#skills">Skills</a></li>
-        <li><a href="#testimonials">Testimonials</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a class="btn pri" id="rn" href="resume.pdf" download="Mahesh_Biradar_Resume.pdf">Resume ↓</a></li>
       </ul>
@@ -1072,7 +1071,7 @@
     </div>
   </section>
 
-  <section id="testimonials">
+  <!-- <section id="testimonials">
     <div class="w">
       <p class="mono">05 / Testimonials</p>
       <h2 class="rv">What people say</h2>
@@ -1091,11 +1090,11 @@
         </article>
       </div>
     </div>
-  </section>
+  </section> -->
 
-  <section id="contact" class="alt">
+  <section id="contact">
     <div class="w">
-      <p class="mono">06 / Contact</p>
+      <p class="mono">05 / Contact</p>
       <h2 class="rv">Let’s connect.</h2>
       <div class="cg rv">
         <div>
@@ -1153,9 +1152,26 @@
         e.preventDefault(); var f = e.target, s = $("#fs"), b = $("#sb");
         if (!CFG.web3formsKey) { s.textContent = "Form not set up yet: add your Web3Forms key in the CFG section."; return }
         b.disabled = true; s.style.color = ""; s.textContent = "Sending…";
-        fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ access_key: CFG.web3formsKey, subject: "New portfolio message from " + f.name.value, name: f.name.value, email: f.email.value, message: f.message.value, botcheck: f.botcheck.value }) })
-          .then(function (r) { return r.json() }).then(function (d) { if (d.success) { s.style.color = "var(--acc)"; s.textContent = "Thanks! Your message was sent."; f.reset() } else throw 0 })
-          .catch(function () { s.style.color = "var(--ink)"; s.textContent = "Could not send. Please try again or use the links beside the form." }).finally(function () { b.disabled = false })
+        var fd = new FormData(f);
+        fd.append("access_key", CFG.web3formsKey);
+        fd.append("subject", "New portfolio message from " + f.name.value);
+        if (!f.botcheck || !f.botcheck.value) { fd.delete("botcheck"); }
+        fetch("https://api.web3forms.com/submit", { method: "POST", body: fd })
+          .then(function (r) { return r.json() })
+          .then(function (d) {
+            if (d.success) {
+              s.style.color = "var(--acc)";
+              s.textContent = "Thanks! Your message was sent.";
+              f.reset();
+            } else {
+              throw new Error(d.message || "Could not send.");
+            }
+          })
+          .catch(function (err) {
+            s.style.color = "var(--ink)";
+            s.textContent = (err && err.message) ? err.message : "Could not send. Please try again or use the links beside the form.";
+          })
+          .finally(function () { b.disabled = false });
       };
       var PV = /preview/.test(location.search);
       if (!REVIEWS.length && PV) REVIEWS = [{ q: "Sample: learns quickly and turns ideas into working features.", a: "Sample review (preview only)" }, { q: "Sample: clean code, good communication, reliable on deadlines.", a: "Sample review (preview only)" }, { q: "Sample: a developer who asks the right questions.", a: "Sample review (preview only)" }];
