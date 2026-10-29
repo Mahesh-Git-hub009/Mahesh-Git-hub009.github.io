@@ -556,6 +556,61 @@
       }
     }
 
+    .tm {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px
+    }
+
+    .tm article {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 26px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .25s, box-shadow .25s, border-color .25s
+    }
+
+    .tm article:hover {
+      transform: translateY(-4px);
+      border-color: var(--acc);
+      box-shadow: 0 16px 36px -12px rgba(11, 18, 32, .1)
+    }
+
+    .tm q {
+      display: block;
+      quotes: none;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink);
+      margin-bottom: 20px
+    }
+
+    .tm cite {
+      font-style: normal;
+      display: flex;
+      flex-direction: column;
+      gap: 3px
+    }
+
+    .tm cite b {
+      font: 600 14px Inter, sans-serif;
+      color: var(--acc)
+    }
+
+    .tm cite span {
+      font-size: 13px;
+      color: var(--mut)
+    }
+
+    @media(max-width:760px) {
+      .tm {
+        grid-template-columns: 1fr
+      }
+    }
+
     .cg {
       display: grid;
       grid-template-columns: 1fr 1.1fr;
@@ -899,6 +954,7 @@
         <li><a href="#work">Projects</a></li>
         <li><a href="#journey">Journey</a></li>
         <li><a href="#skills">Skills</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a class="btn pri" id="rn" href="resume.pdf" download="Mahesh_Biradar_Resume.pdf">Resume ↓</a></li>
       </ul>
@@ -1016,9 +1072,30 @@
     </div>
   </section>
 
-  <section id="contact">
+  <section id="testimonials">
     <div class="w">
-      <p class="mono">05 / Contact</p>
+      <p class="mono">05 / Testimonials</p>
+      <h2 class="rv">What people say</h2>
+      <div class="tm">
+        <article class="rv">
+          <q>“Mahesh learns quickly, writes clean code, and turns complex ideas into working full stack features.”</q>
+          <cite><b>Project Collaborator</b><span>Peer Developer</span></cite>
+        </article>
+        <article class="rv">
+          <q>“Great problem-solving mindset and consistent communication when building full stack applications.”</q>
+          <cite><b>Academic Mentor</b><span>Faculty Advisor</span></cite>
+        </article>
+        <article class="rv">
+          <q>“Demonstrated strong ownership and execution while building and deploying the Socratic Code Tutor.”</q>
+          <cite><b>Sage Hub Lead</b><span>Team Member</span></cite>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="alt">
+    <div class="w">
+      <p class="mono">06 / Contact</p>
       <h2 class="rv">Let’s connect.</h2>
       <div class="cg rv">
         <div>
@@ -1036,10 +1113,6 @@
   </section>
 
   <footer>© 2026 Mahesh Biradar</footer>
-  <button id="rt">Reviews</button>
-  <aside id="rp" aria-label="Reviews"><button id="rx" aria-label="Close">×</button>
-    <p class="mono">What people say</p><q id="rq"></q><small id="ra"></small>
-  </aside>
   <button id="top" aria-label="Back to top">↑</button>
 
   <script>
@@ -1086,13 +1159,14 @@
       };
       var PV = /preview/.test(location.search);
       if (!REVIEWS.length && PV) REVIEWS = [{ q: "Sample: learns quickly and turns ideas into working features.", a: "Sample review (preview only)" }, { q: "Sample: clean code, good communication, reliable on deadlines.", a: "Sample review (preview only)" }, { q: "Sample: a developer who asks the right questions.", a: "Sample review (preview only)" }];
-      if (REVIEWS.length) {
-        var rt = $("#rt"), rp = $("#rp"), ri = 0; rt.style.display = "block";
+      var rt = $("#rt"), rp = $("#rp");
+      if (rt && rp && REVIEWS.length) {
+        var ri = 0; rt.style.display = "block";
         function show() { $("#rq").style.opacity = 0; setTimeout(function () { var r = REVIEWS[ri]; $("#rq").textContent = "“" + r.q + "”"; $("#ra").textContent = r.a; $("#rq").style.opacity = 1 }, 250) }
         show(); setInterval(function () { if (rp.classList.contains("open") && REVIEWS.length > 1) { ri = (ri + 1) % REVIEWS.length; show() } }, 5000);
         rt.onclick = function () { rp.classList.toggle("open") }; $("#rx").onclick = function () { rp.classList.remove("open") }; if (PV) setTimeout(function () { rp.classList.add("open") }, 1500)
       }
-      else $("#rp").style.display = "none";
+      else if (rp) rp.style.display = "none";
       var sc = $("#sc"), w = sc.textContent.split(" "); sc.textContent = ""; w.forEach(function (x, k) { var s = document.createElement("span"); s.textContent = x + (k < w.length - 1 ? " " : ""); sc.appendChild(s) });
       var ws = sc.children, io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target) } }) }, { threshold: .15 });
       $$(".rv,.tl article").forEach(function (e) { io.observe(e) });
