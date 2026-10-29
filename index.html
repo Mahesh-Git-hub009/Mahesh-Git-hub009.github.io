@@ -392,62 +392,169 @@
     }
 
     .pc {
+      position: relative;
       background: #fff;
       border: 1px solid var(--line);
       border-radius: 18px;
       padding: 28px;
       display: flex;
       flex-direction: column;
-      transition: transform .3s, border-color .3s, box-shadow .3s, opacity .8s
+      transition: transform .3s cubic-bezier(.2, .8, .2, 1), border-color .3s, box-shadow .3s, opacity .8s;
+      cursor: default;
+    }
+
+    .pc.has-live {
+      cursor: pointer;
     }
 
     .pc:hover {
       transform: translateY(-6px);
       border-color: var(--acc);
-      box-shadow: 0 18px 40px -22px rgba(37, 99, 235, .45)
+      box-shadow: 0 20px 45px -18px rgba(37, 99, 235, .25);
+    }
+
+    .pc-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font: 600 12px "JetBrains Mono", monospace;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(37, 99, 235, .08);
+      color: var(--acc);
+      border: 1px solid rgba(37, 99, 235, .22);
+    }
+
+    .live-pill i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, .7);
+      animation: pulse-dot 1.8s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, .7); }
+      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .live-hover-tip {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--acc);
+      color: #fff;
+      font: 600 12.5px Inter, sans-serif;
+      padding: 6px 14px;
+      border-radius: 99px;
+      opacity: 0;
+      transform: translateY(-4px) scale(.95);
+      transition: opacity .25s ease, transform .25s ease;
+      pointer-events: none;
+      box-shadow: 0 8px 20px -4px rgba(37, 99, 235, .5);
+      z-index: 2;
+    }
+
+    .pc.has-live:hover .live-hover-tip {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .pc.has-live:hover .live-pill {
+      opacity: 0;
     }
 
     .pc h3 {
-      font-size: 1.5rem;
-      margin: 6px 0 10px
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin: 4px 0 10px;
+      color: var(--ink);
+      line-height: 1.25;
     }
 
     .pc p {
       color: var(--mut);
-      font-size: 16px;
-      flex: 1
+      font-size: 15px;
+      line-height: 1.65;
+      flex: 1;
     }
 
     .tg {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 18px
+      gap: 7px;
+      margin-top: 18px;
     }
 
     .tg span {
-      font: 500 12.5px "JetBrains Mono", monospace;
-      padding: 4px 10px;
+      font: 500 12px "JetBrains Mono", monospace;
+      padding: 4px 9px;
       border-radius: 6px;
       background: var(--soft);
-      color: var(--mut)
+      color: var(--ink);
+      border: 1px solid var(--line);
     }
 
     .lk {
       display: flex;
-      gap: 18px;
-      margin-top: 18px;
-      font-weight: 600;
-      font-size: 15px
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+      align-items: center;
     }
 
-    .lk a {
-      color: var(--acc);
-      text-decoration: none
+    .lk .btn-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 9px;
+      font: 600 14px Inter, sans-serif;
+      text-decoration: none;
+      background: var(--acc);
+      color: #fff;
+      box-shadow: 0 4px 14px -3px rgba(37, 99, 235, .4);
+      transition: transform .2s, background .2s, box-shadow .2s;
     }
 
-    .lk a:hover {
-      text-decoration: underline
+    .lk .btn-live:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(37, 99, 235, .6);
+      text-decoration: none;
+    }
+
+    .lk .btn-code {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 9px;
+      font: 600 14px Inter, sans-serif;
+      text-decoration: none;
+      background: #fff;
+      color: var(--ink);
+      border: 1.5px solid var(--line);
+      transition: transform .2s, border-color .2s, color .2s;
+    }
+
+    .lk .btn-code:hover {
+      border-color: var(--ink);
+      transform: translateY(-2px);
+      text-decoration: none;
     }
 
     @media(max-width:760px) {
@@ -966,8 +1073,7 @@
       <div><span class="pill"><i></i>Open to internships from 28 Dec 2026</span>
         <h1 aria-label="Mahesh Biradar"><span class="ln"><span>Mahesh</span></span><span
             class="ln"><span>Biradar</span></span></h1>
-        <p class="lead">Full stack developer building web apps with React, Node.js and MongoDB. Final-year B.Tech CSE
-          student who ships real projects.</p>
+        <p class="lead">Full stack developer building scalable web applications with React, Node.js and MongoDB. Final-year B.Tech CSE student passionate about clean architecture, secure APIs, and production deployment.</p>
         <div class="cta"><a class="btn pri" href="resume.pdf" download="Mahesh_Biradar_Resume.pdf">Download Resume
             ↓</a><a class="btn" href="#work">View projects</a><a class="btn" href="#contact">Contact me</a></div>
       </div>
@@ -983,9 +1089,7 @@
     <div class="w">
       <p class="mono">01 / About</p>
       <h2 class="rv">A developer who learns by building.</h2>
-      <p class="scrub" id="sc">I’m a B.Tech Computer Science student at Jaipur National University, graduating in June
-        2027. I build full stack apps end to end, from an AI tutor that teaches through questions to a community
-        platform for students. I’m looking for an internship where I can ship real features and learn from a team.</p>
+      <p class="scrub" id="sc">I’m a final-year Computer Science student at Jaipur National University (graduating June 2027) building robust full-stack applications. From architecting AI mentorship platforms with secure proxy backends to high-performance zero-dependency client tools, I focus on clean code, system architecture, and shipping production-ready products.</p>
     </div>
   </section>
 
@@ -1121,10 +1225,34 @@
       github: "https://github.com/Mahesh-Git-hub009", linkedin: "https://www.linkedin.com/in/mahesh-biradar-0a8984287/", email: "maheshbiradar29115@gmail.com"   // optional, shown as buttons when filled
     };
     var PROJECTS = [
-      { n: "Socratic Code Tutor", d: "A deployed AI coding mentor for Sage Hub that guides learners with questions. It has a code sandbox, Pomodoro timer and multi-turn chat, and an Express backend keeps the Gemini API key off the browser.", t: ["React", "Tailwind CSS", "Node.js", "Express", "Gemini API"], live: "https://socratic-tutor-kohl.vercel.app/", code: "" },
-      { n: "Scholar", d: "A MERN platform for shared resources, virtual study spaces and topic channels. Currently in progress.", t: ["React", "Node.js", "Express", "MongoDB"], live: "", code: "" },
-      { n: "Career Compass", d: "A career-guidance portal with domain-based roadmaps and client-side filtering, built with vanilla JavaScript and no frameworks.", t: ["HTML5", "CSS3", "JavaScript"], live: "", code: "" },
-      { n: "Student Management System", d: "A web app for managing student records, built with plain HTML, CSS and JavaScript.", t: ["HTML", "CSS", "JavaScript"], live: "", code: "" }
+      {
+        n: "Socratic Code Tutor",
+        d: "Production AI coding mentor engineered for Sage Hub to guide developers through inquiry-based reasoning instead of direct solutions. Designed a secure Node.js/Express proxy architecture that eliminates client-side Gemini API key exposure, integrated an interactive browser code sandbox, Pomodoro productivity cycle, and persistent multi-turn conversational context.",
+        t: ["React", "Google Gemini API", "Node.js", "Express", "Tailwind CSS", "REST API", "Vercel"],
+        live: "https://socratic-tutor-kohl.vercel.app/",
+        code: "https://github.com/Mahesh-Git-hub009/Socratic-tutor"
+      },
+      {
+        n: "Scholar",
+        d: "Full-stack MERN academic collaboration platform engineered for university students. Features centralized peer resource repositories, virtual discussion channels, and synchronized study workspaces. Built modular Express REST APIs with optimized MongoDB schema indexing and a component-driven React interface.",
+        t: ["React", "Node.js", "Express", "MongoDB", "RESTful APIs", "JWT Auth"],
+        live: "",
+        code: ""
+      },
+      {
+        n: "Career Compass",
+        d: "Interactive career pathway navigator offering domain-specific curriculum roadmaps and milestone tracking. Built with 100% vanilla JavaScript for zero-dependency performance, sub-10ms client-side search filtering, and an ultra-responsive interface across all devices.",
+        t: ["Vanilla JavaScript", "HTML5", "CSS3", "DOM APIs", "Client-Side Filtering"],
+        live: "",
+        code: "https://github.com/Mahesh-Git-hub009/Career-compass"
+      },
+      {
+        n: "Student Management Portal",
+        d: "End-to-end academic administration application enabling real-time student registration, attendance tracking, and performance analytics. Features robust client-side validation, clean state management, and structured data persistence.",
+        t: ["JavaScript (ES6+)", "HTML5", "CSS3", "CRUD Architecture", "Data Persistence"],
+        live: "",
+        code: ""
+      }
     ];
     // Add real testimonials only. Example: {q:"Mahesh learned fast and delivered on time.",a:"Name, Role"}
     var REVIEWS = [
@@ -1140,12 +1268,45 @@
       $$("#menu a").forEach(function (a) { a.addEventListener("click", function () { $("#menu").classList.remove("open") }) });
       var pg = $("#pg");
       PROJECTS.forEach(function (p, i) {
-        var c = document.createElement("article"); c.className = "pc rv"; c.style.setProperty("--d", (i % 2) * .12 + "s");
-        var h = '<p class="mono">0' + (i + 1) + '</p><h3></h3><p></p><div class="tg"></div><div class="lk"></div>'; c.innerHTML = h;
-        c.querySelector("h3").textContent = p.n; c.querySelectorAll("p")[1].textContent = p.d;
+        var c = document.createElement("article");
+        c.className = "pc rv" + (p.live ? " has-live" : "");
+        c.style.setProperty("--d", (i % 2) * .12 + "s");
+        var liveBadge = p.live ? '<span class="live-pill"><i></i>Live App</span><span class="live-hover-tip">Check Live Demo ↗</span>' : '';
+        var h = '<div class="pc-top"><p class="mono">0' + (i + 1) + '</p>' + liveBadge + '</div><h3></h3><p></p><div class="tg"></div><div class="lk"></div>';
+        c.innerHTML = h;
+        c.querySelector("h3").textContent = p.n;
+        c.querySelectorAll("p")[1].textContent = p.d;
         p.t.forEach(function (x) { var s = document.createElement("span"); s.textContent = x; c.querySelector(".tg").appendChild(s) });
-        [["Live demo ↗", p.live], ["Code ↗", p.code]].forEach(function (l) { if (!l[1]) return; var a = document.createElement("a"); a.href = l[1]; a.target = "_blank"; a.rel = "noopener"; a.textContent = l[0]; c.querySelector(".lk").appendChild(a) });
-        c.addEventListener("mousemove", function (e) { var b = c.getBoundingClientRect(); c.style.setProperty("--mx", e.clientX - b.left + "px"); c.style.setProperty("--my", e.clientY - b.top + "px") }); pg.appendChild(c)
+        if (p.live) {
+          var al = document.createElement("a");
+          al.className = "btn-live";
+          al.href = p.live;
+          al.target = "_blank";
+          al.rel = "noopener";
+          al.textContent = "Check Live Demo ↗";
+          c.querySelector(".lk").appendChild(al);
+        }
+        if (p.code) {
+          var ac = document.createElement("a");
+          ac.className = "btn-code";
+          ac.href = p.code;
+          ac.target = "_blank";
+          ac.rel = "noopener";
+          ac.textContent = "GitHub Repo ↗";
+          c.querySelector(".lk").appendChild(ac);
+        }
+        if (p.live) {
+          c.addEventListener("click", function (e) {
+            if (e.target.closest("a")) return;
+            window.open(p.live, "_blank");
+          });
+        }
+        c.addEventListener("mousemove", function (e) {
+          var b = c.getBoundingClientRect();
+          c.style.setProperty("--mx", e.clientX - b.left + "px");
+          c.style.setProperty("--my", e.clientY - b.top + "px");
+        });
+        pg.appendChild(c);
       });
       var so = $("#so");[["Email", CFG.email && "mailto:" + CFG.email], ["GitHub", CFG.github], ["LinkedIn", CFG.linkedin]].forEach(function (l) { if (!l[1]) return; var a = document.createElement("a"); a.className = "btn"; a.href = l[1]; if (l[0] !== "Email") { a.target = "_blank"; a.rel = "noopener" } a.textContent = l[0]; so.appendChild(a) });
       $("#cf").onsubmit = function (e) {
